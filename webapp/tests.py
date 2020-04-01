@@ -1,3 +1,9 @@
-from django.test import TestCase
 
-# Create your tests here.
+from POC.Connection import *
+
+conn = openConnection()
+cursor = conn.cursor()
+rs=cursor.foreignKeys().fetchall()
+for r in rs:
+    print(r)
+

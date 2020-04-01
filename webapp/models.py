@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Datasource(models.Model):
-    id=models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=256)
     version = models.CharField(max_length=256)
 
@@ -32,7 +32,6 @@ class Attribute(models.Model):
     id = models.AutoField(primary_key=True)
     columnName = models.CharField(max_length=256)
     type = models.CharField(max_length=256)
-    nullable = models.BooleanField()
     key = models.CharField(max_length=256, blank=True)
     tableId = models.ForeignKey(Table, on_delete=models.CASCADE)
     schemaId = models.ForeignKey(Schema, on_delete=models.CASCADE)
