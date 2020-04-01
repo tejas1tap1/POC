@@ -18,6 +18,7 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 from webapp import views
 from webapp.models import *
+from POC.Extraction import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +26,16 @@ urlpatterns = [
     path('schemas/', views.SchemaList.as_view()),
     path('tables/', views.TableList.as_view()),
     path('attributes/', views.AttributeList.as_view()),
-    path('mappings/', views.MappingList.as_view()),
+    path('mappings/', views.MappingList.as_view())
 ]
+
+Mapping.objects.all().delete()
+Attribute.objects.all().delete()
+Table.objects.all().delete()
+Schema.objects.all().delete()
+Datasource.objects.all().delete()
+extractDatasource()
+schemaMetadata()
+tableMetadata()
+attributeMetadata()
+mappingMetadata()

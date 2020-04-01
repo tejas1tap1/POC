@@ -88,28 +88,34 @@ def attributeMetadata():
 def mappingMetadata():
     conn = openConnection()
     cursor = conn.cursor()
-    rs = cursor.foreignKeys().fetchall()
-    for r in rs:
-        pktable_cat = r.pktable_cat
-        pktable_name = r.pktable_name
-        pkcolumn_name = r.pkcolumn_name
-        fktable_cat = r.fktable_cat
-        fktable_name = r.fktable_name
-        fkcolumn_name = r.fkcolumn_name
-        pk_name = r.pk_name
-        fk_name = r.fk_name
-        fkSchema=Schema.objects.get(databaseName=fktable_cat)
-        fkTable=Table.objects.get(tableName=fktable_name, schemaId=fkSchema)
-        fkAttribute = Attribute.objects.get(columnName=fkcolumn_name, tableId=fkTable.id)
-        pkSchema=Schema.objects.get(databaseName=pktable_cat)
-        pkTable=Table.objects.get(tableName=pktable_name, schemaId=pkSchema)
-        mapping = None
-        try:
-            mapping = Mapping.objects.get(attributeIdForeignKey=fkAttribute)
-        except:
-            pass
-        if mapping==None:
-           mapping = Mapping(attributeIdForeignKey=fkAttribute, tableIdForeign=pkTable)
-        mapping.save()
+    rs = cursor.tables().fetchall()
+    for table in rs:
+        primeryKeyAttributes = cursor.foreignKeys(table=table.table_name).fetchall()
+        for r in primeryKeyAttributes:
+            pktable_cat = r.pktable_cat
+            pktable_name = r.pktable_name
+            pkcolumn_name = r.pkcolumn_name
+            fktable_cat = r.fktable_cat
+            fktable_name = r.fktable_name
+            fkcolumn_name = r.fkcolumn_name
+            pk_name = r.pk_name
+            fk_name = r.fk_name
+            try:
+                fkSchema = Schema.objects.get(databaseName=fktable_cat)
+                fkTable = Table.objects.get(tableName=fktable_name, schemaId=fkSchema)
+                fkAttribute = Attribute.objects.get(columnName=fkcolumn_name, tableId=fkTable.id)
+                pkSchema = Schema.objects.get(databaseName=pktable_cat)
+                pkTable = Table.objects.get(tableName=pktable_name, schemaId=pkSchema)
+                mapping = None
+                try:
+                    mapping = Mapping.objects.get(attributeIdForeignKey=fkAttribute.id)
+                except:
+                    pass
+                if mapping == None:
+                    mapping = Mapping(attributeIdForeignKey=fkAttribute.id, tableIdForeign=pkTable.id)
+                mapping.save()
+            except:
+                pass
     closeConnection(conn)
     return
+
