@@ -26,16 +26,7 @@ urlpatterns = [
     path('schemas/', views.SchemaList.as_view()),
     path('tables/', views.TableList.as_view()),
     path('attributes/', views.AttributeList.as_view()),
-    path('mappings/', views.MappingList.as_view())
+    path('mappings/', views.MappingList.as_view()),
+    path('connection-details',views.ConnectionDetails.as_view())
 ]
 
-Mapping.objects.all().delete()
-Attribute.objects.all().delete()
-Table.objects.all().delete()
-Schema.objects.all().delete()
-Datasource.objects.all().delete()
-extractDatasource()
-schemaMetadata()
-tableMetadata()
-attributeMetadata()
-mappingMetadata()

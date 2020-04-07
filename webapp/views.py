@@ -20,7 +20,6 @@ class DatasourceList(APIView):
 class SchemaList(APIView):
 
     def get(self, request):
-
         schemaList = Schema.objects.all()
         serializer = schemaSerializer(schemaList, many=True)
         return Response(serializer.data)
@@ -47,3 +46,26 @@ class MappingList(APIView):
         mappingList = Mapping.objects.all()
         serializer = mappingSerializer(mappingList, many=True)
         return Response(serializer.data)
+
+class ConnectionDetails(APIView):
+
+    def post(self,request):
+        url = request.data.get('url')
+        port = request.data.get('port')
+        database = request.data.get('database')
+        user = request.data.get('user')
+        password = request.data.get('password')
+        details= ConnectionParams(None,url,port,database,user,password)
+        Mapping.objects.all().delete()
+        Attribute.objects.all().delete()
+        Table.objects.all().delete()
+        Schema.objects.all().delete()
+        Datasource.objects.all().delete()
+        extractDatasource()
+        schemaMetadata(details)
+        tableMetadata(details)
+        attributeMetadata(details)
+        mappingMetadata(details)
+        return Response("OK")
+
+

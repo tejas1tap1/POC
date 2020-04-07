@@ -13,8 +13,8 @@ def extractDatasource():
     return
 
 
-def schemaMetadata():
-    conn = openConnection()
+def schemaMetadata(ConnectionParamas):
+    conn = openConnection(ConnectionParamas)
     cursor = conn.cursor()
     rs = cursor.tables().fetchall()
     result = set()
@@ -34,8 +34,8 @@ def schemaMetadata():
     return
 
 
-def tableMetadata():
-    conn = openConnection()
+def tableMetadata(ConnectionParamas):
+    conn = openConnection(ConnectionParamas)
     cursor = conn.cursor()
     rs = cursor.tables().fetchall()
     for r in rs:
@@ -52,8 +52,8 @@ def tableMetadata():
     closeConnection(conn)
     return
 
-def attributeMetadata():
-    conn = openConnection()
+def attributeMetadata(ConnectionParamas):
+    conn = openConnection(ConnectionParamas)
     cursor = conn.cursor()
     rs = cursor.columns().fetchall()
     for r in rs:
@@ -85,8 +85,8 @@ def attributeMetadata():
     return
 
 
-def mappingMetadata():
-    conn = openConnection()
+def mappingMetadata(ConnectionParamas):
+    conn = openConnection(ConnectionParamas)
     cursor = conn.cursor()
     rs = cursor.tables().fetchall()
     for table in rs:
